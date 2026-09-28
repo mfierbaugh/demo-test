@@ -1,5 +1,7 @@
+import os
 import sys
 from pyats import aetest
+from pyats.topology import loader
 
 
 class CommonSetup(aetest.CommonSetup):
@@ -11,27 +13,19 @@ class CommonSetup(aetest.CommonSetup):
 class VerifyPlatformAndVersion(aetest.Testcase):
     @aetest.test
     def verify_platform_and_version(self):
-        device = getattr(self, "device", None)
-
-        if device is None:
-            testbed = getattr(self, "testbed", None)
-            devices = getattr(testbed, "devices", None) if testbed is not None else None
-            if devices:
-                device = list(devices.values())[0]
-
-        if device is None:
-            self.failed("No device available to execute show platform and show version")
+        testbed = self.parameters.get("testbed")
+        if testbed is None or not testbed.devices:
+            self.failed("No testbed/devices available for this run")
             return
 
+        device = list(testbed.devices.values())[0]
+
         try:
-            if hasattr(device, "parse"):
-                platform_output = device.parse("show platform")
-                version_output = device.parse("show version")
-            else:
-                platform_output = device.execute("show platform")
-                version_output = device.execute("show version")
+            device.connect(via="cli", connection_timeout=30, learn_hostname=True)
+            platform_output = device.parse("show platform")
+            version_output = device.parse("show version")
         except Exception as exc:
-            self.failed(f"Failed to execute show platform or show version: {exc}")
+            self.failed(f"Failed to connect/execute show platform or show version: {exc}")
             return
 
         if not version_output:
@@ -46,7 +40,7 @@ class VerifyPlatformAndVersion(aetest.Testcase):
             return
 
         self.passed(
-            "show platform and show version executed successfully; "
+            f"show platform and show version executed successfully on {device.name}; "
             "no failed platform components detected"
         )
 
@@ -85,5 +79,7 @@ class CommonCleanup(aetest.CommonCleanup):
 
 
 if __name__ == "__main__":
-    result = aetest.main()
+    testbed_path = os.environ.get("TESTBED_PATH")
+    testbed = loader.load(testbed_path) if testbed_path else None
+    result = aetest.main(testbed=testbed)
     sys.exit(0 if result else 1)
