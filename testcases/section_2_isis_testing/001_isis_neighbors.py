@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import sys
@@ -185,12 +186,18 @@ class VerifyIsisNeighborsUp(aetest.Testcase):
         failures = []
         neighbor_devices = 0
 
+        def _emit_device_result(device_name, device_status, detail):
+            print(json.dumps({"netvalid_device_result": {
+                "device": device_name, "status": device_status, "detail": detail,
+            }}))
+
         for device in devices:
             try:
                 device.connect(via="cli")
                 raw = device.execute("show isis neighbors")
             except Exception as exc:
                 logger.warning("Skipping device %s: %s", device.name, exc)
+                _emit_device_result(device.name, "error", f"connect/execute failed: {exc}")
                 continue
 
             try:
@@ -213,43 +220,58 @@ class VerifyIsisNeighborsUp(aetest.Testcase):
             )
 
             if any(marker in raw_lower for marker in skip_markers):
+                _emit_device_result(device.name, "pass", "ISIS not configured on this device; skipped")
                 continue
 
             entries = _find_neighbor_entries(parsed) if parsed else []
 
             if entries:
                 neighbor_devices += 1
+                device_failures = []
 
                 for entry in entries:
                     state = _get_state(entry)
                     identifier = _get_identifier(entry)
 
                     if state is None:
-                        failures.append(
-                            f"{device.name}: neighbor {identifier} state missing"
-                        )
+                        msg = f"neighbor {identifier} state missing"
+                        device_failures.append(msg)
+                        failures.append(f"{device.name}: {msg}")
                     elif not _is_up(state):
-                        failures.append(
-                            f"{device.name}: neighbor {identifier} state is {state}"
-                        )
+                        msg = f"neighbor {identifier} state is {state}"
+                        device_failures.append(msg)
+                        failures.append(f"{device.name}: {msg}")
 
+                if device_failures:
+                    _emit_device_result(device.name, "fail", "; ".join(device_failures))
+                else:
+                    _emit_device_result(device.name, "pass", f"{len(entries)} neighbor(s) all UP")
                 continue
 
             raw_states = _extract_raw_states(raw_text)
 
             if raw_states:
                 neighbor_devices += 1
+                device_failures = []
 
                 for state in raw_states:
                     if not _is_up(state):
-                        failures.append(f"{device.name}: neighbor state is {state}")
+                        msg = f"neighbor state is {state}"
+                        device_failures.append(msg)
+                        failures.append(f"{device.name}: {msg}")
 
+                if device_failures:
+                    _emit_device_result(device.name, "fail", "; ".join(device_failures))
+                else:
+                    _emit_device_result(device.name, "pass", f"{len(raw_states)} neighbor state(s) all UP")
                 continue
 
             if "system id" in raw_lower or "state" in raw_lower:
-                failures.append(
-                    f"{device.name}: ISIS is running but no neighbors are up"
-                )
+                msg = "ISIS is running but no neighbors are up"
+                failures.append(f"{device.name}: {msg}")
+                _emit_device_result(device.name, "fail", msg)
+            else:
+                _emit_device_result(device.name, "pass", "no ISIS neighbor data found; treated as not applicable")
 
         if failures:
             self.failed("ISIS neighbor verification failed: " + "; ".join(failures))
