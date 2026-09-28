@@ -1,0 +1,4 @@
+name: Gather platform information
+description: Do show platform and show version.  Verify no platform components are
+  in a failed state
+tags: []
