@@ -1,7 +1,10 @@
+import logging
 import os
 import sys
 from pyats import aetest
 from pyats.topology import loader
+
+logger = logging.getLogger(__name__)
 
 class CommonSetup(aetest.CommonSetup):
     @aetest.subsection
@@ -187,13 +190,13 @@ class VerifyIsisNeighborsUp(aetest.Testcase):
                 device.connect(via="cli")
                 raw = device.execute("show isis neighbors")
             except Exception as exc:
-                self.log.warning("Skipping device %s: %s", device.name, exc)
+                logger.warning("Skipping device %s: %s", device.name, exc)
                 continue
 
             try:
                 parsed = device.parse("show isis neighbors")
             except Exception as exc:
-                self.log.warning("Parse failed for device %s: %s", device.name, exc)
+                logger.warning("Parse failed for device %s: %s", device.name, exc)
                 parsed = None
 
             raw_text = str(raw)
@@ -256,7 +259,7 @@ class VerifyIsisNeighborsUp(aetest.Testcase):
             self.failed("No ISIS neighbors found on any device in the testbed")
             return
 
-        self.log.info("All discovered ISIS neighbors are up")
+        logger.info("All discovered ISIS neighbors are up")
 
 class CommonCleanup(aetest.CommonCleanup):
     @aetest.subsection
