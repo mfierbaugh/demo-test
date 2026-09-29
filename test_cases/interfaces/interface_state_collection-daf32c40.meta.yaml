@@ -1,0 +1,13 @@
+name: Interface State Collection
+description: Collect and learn interface state information
+suite: Interfaces
+tags:
+- ai-composed
+- discovery
+- interface
+- state
+platforms: []
+vendors: []
+dependencies: []
+expected_output: The test successfully collects interface state information and records
+  the learned state for each interface in scope.
