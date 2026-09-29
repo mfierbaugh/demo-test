@@ -206,6 +206,14 @@ class VerifyIsisNeighborsUp(aetest.Testcase):
                 logger.warning("Parse failed for device %s: %s", device.name, exc)
                 parsed = None
 
+            if parsed is not None:
+                print(json.dumps({"netvalid_baseline_state": {
+                    "device": device.name,
+                    "key": "show isis neighbors",
+                    "parsed": parsed,
+                    "exclude": [],
+                }}, default=str))
+
             raw_text = str(raw)
             raw_lower = raw_text.lower()
 
