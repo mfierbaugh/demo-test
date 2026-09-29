@@ -1,0 +1,12 @@
+name: ISIS Neighbors
+description: Run show isis neighbors and verify all discovered ISIS neighbors are up
+suite: IGP
+tags:
+- ai-composed
+- isis
+- igp
+- neighbors
+platforms: []
+vendors: []
+dependencies: []
+expected_output: All discovered ISIS neighbors are up.
