@@ -1,0 +1,9 @@
+name: Platform
+description: Do show platform and verify there are no failed components
+suite: Platform
+tags:
+- ai-composed
+platforms: []
+vendors: []
+dependencies: []
+expected_output: ''
