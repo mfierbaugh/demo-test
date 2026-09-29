@@ -252,6 +252,15 @@ class VerifyShowPlatformNoFailedComponents(aetest.Testcase):
                     }))
                     continue
 
+                print(json.dumps({
+                    "netvalid_baseline_state": {
+                        "device": device_name,
+                        "key": "show platform",
+                        "parsed": parsed,
+                        "exclude": [],
+                    }
+                }, default=str))
+
                 failed = _find_failed(parsed)
 
                 if failed:
