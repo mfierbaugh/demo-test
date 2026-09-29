@@ -58,7 +58,7 @@ class CollectShowControllerOptics(aetest.Testcase):
 
             try:
                 device.connect(via="cli")
-                parsed = device.parse("show controller optics")
+                parsed = device.parse("show controller optics *")
 
                 baseline_ok = _print_json({
                     "netvalid_baseline_state": {
