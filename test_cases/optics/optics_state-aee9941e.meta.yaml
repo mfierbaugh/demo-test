@@ -1,0 +1,18 @@
+name: Optics State
+description: Collect show controller optics. Parse and make available for comparison.
+suite: Optics
+tags:
+- ai-composed
+- cisco
+- comparison
+- optics
+- parsing
+- show-command
+- transceivers
+platforms: []
+vendors:
+- Cisco
+dependencies:
+- Requires devices that support the show controller optics command
+expected_output: The test collects and parses show controller optics output from each
+  device and exposes normalized optics fields for comparison.
