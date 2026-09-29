@@ -1,0 +1,12 @@
+name: Show Version
+description: Capture the show version of the device
+suite: Platform
+tags:
+- ai-composed
+- inventory
+- show-version
+- version
+platforms: []
+vendors: []
+dependencies: []
+expected_output: The test successfully captures the device's show version output.
