@@ -1,0 +1,16 @@
+name: BGP Post Check
+description: Collect and learn BGP state information across all address families
+suite: BGP
+tags:
+- address-families
+- ai-composed
+- bgp
+- routing
+- state-collection
+platforms: []
+vendors: []
+dependencies:
+- BGP must be configured and reachable on devices in scope
+expected_output: The test passes when BGP state information is successfully collected
+  and learned for every configured address family, including peer/session status and
+  address-family state.
