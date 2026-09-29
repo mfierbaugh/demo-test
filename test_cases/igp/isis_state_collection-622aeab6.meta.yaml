@@ -1,0 +1,16 @@
+name: ISIS State Collection
+description: Collect and learn ISIS state information across all address families.
+suite: IGP
+tags:
+- address-families
+- ai-composed
+- isis
+- state-collection
+- state-learning
+platforms: []
+vendors: []
+dependencies:
+- ISIS must be configured and enabled on the devices in scope
+- Requires management reachability to every device in scope
+expected_output: The test successfully collects ISIS state information for all configured
+  address families and records the learned state without errors.
