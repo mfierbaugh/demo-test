@@ -1,0 +1,16 @@
+name: BGP Peering - ipv4 unicast
+description: Verify BGP peering IPv4 unicast address family is in ESTABLISHED state
+suite: ''
+tags:
+- ai-composed
+- bgp
+- established
+- ipv4
+- peering
+- unicast
+platforms: []
+vendors: []
+dependencies:
+- BGP peering session configured with IPv4 unicast address family enabled
+expected_output: The BGP peering session for the IPv4 unicast address family is in
+  the Established state.
