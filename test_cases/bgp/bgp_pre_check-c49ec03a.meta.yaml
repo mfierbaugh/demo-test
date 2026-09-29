@@ -1,0 +1,17 @@
+name: BGP Pre Check
+description: Collect and learn BGP state information across all address families
+suite: BGP
+tags:
+- address-family
+- ai-composed
+- bgp
+- routing
+- state
+platforms: []
+vendors: []
+dependencies:
+- BGP must be configured and operational on all devices in scope
+- All relevant BGP address families must be enabled
+expected_output: The test collects BGP state information for every configured address
+  family and confirms that peer/session state and learned route information are captured
+  consistently across all address families.
