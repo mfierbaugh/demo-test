@@ -1,0 +1,11 @@
+name: ISIS State (Full)
+description: "Learns full ISIS state via Genie's device.learn('isis') \u2014 instance,\
+  \ adjacencies, topologies, and hostname database \u2014 for baseline capture and\
+  \ comparison. Requires this runner image's genie ISIS parser patches (patches/isis_*.py);\
+  \ unpatched genie crashes on this command against real IOS-XR output."
+suite: isis
+tags: []
+platforms: []
+vendors: []
+dependencies: []
+expected_output: ''
