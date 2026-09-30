@@ -1,0 +1,9 @@
+name: Interface State
+description: Learns per-interface state (oper status, counters) for baseline capture
+  and comparison.
+suite: interfaces
+tags: []
+platforms: []
+vendors: []
+dependencies: []
+expected_output: ''
