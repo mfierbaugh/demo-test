@@ -1,0 +1,8 @@
+name: BGP State
+description: Learns BGP neighbor/session state for baseline capture and comparison.
+suite: bgp
+tags: []
+platforms: []
+vendors: []
+dependencies: []
+expected_output: ''
