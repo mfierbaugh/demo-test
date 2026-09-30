@@ -1,0 +1,9 @@
+name: ISIS Neighbor State
+description: Collects ISIS neighbor adjacency state (show isis neighbors) for baseline
+  capture and comparison.
+suite: isis
+tags: []
+platforms: []
+vendors: []
+dependencies: []
+expected_output: ''
